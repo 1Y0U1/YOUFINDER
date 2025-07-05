@@ -13,8 +13,8 @@ sudo gem install optparse
 echo ""
 sudo gem install net-http
 echo ""
-sudo chmod +x youfinder
 sudo cp youfinder /usr/bin
+sudo chmod +x /usr/bin/youfinder
 echo "\n***done***\n"
 clear
 echo ""
