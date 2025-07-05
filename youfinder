@@ -1,0 +1,128 @@
+require 'optparse'
+require 'net/http'
+require 'colorize'
+
+
+
+
+options = {}
+version = 1.0
+wordlist = nil
+default_wordlist = "default.txt"
+url = nil
+threads_count = 200
+
+start_time = Time.now   # ⏱️ Start time added
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{__FILE__} [options]"
+
+  opts.on('-w', '--wordlist WORDLIST', 'Specify wordlist (Default: default.txt)') do |word|
+    wordlist = word
+    options[:wordlist] = true
+  end
+
+  opts.on_head('-d','--domain DOMAIN','Specify domain') do |domain|
+    url = domain
+    options[:domain] = true
+  end
+
+  opts.on('-t','--threads THREADS','Specify Threads (Default: 200) ') do |t|
+    threads_count = t.to_i
+    options[:threads] = true
+  end
+
+  opts.on('-v','--version','Version') do
+    puts version
+    exit
+  end
+
+  opts.on('-h', '--help','Show help') do 
+ puts `figlet YOUFINDER`.colorize(:blue).bold
+
+    puts opts
+    exit
+  end
+
+  opts.separator ""
+  opts.on_tail("Example: ruby #{$0} -d example.com -w wordlist.txt -t 500")
+end.parse!
+
+#check if the option is empty or not
+if options.empty?
+  puts "Use -h for help"
+  exit
+end
+
+#check if the domain is given or not
+if options[:domain].nil?
+  puts "Please Specify Domain"
+  exit
+end
+
+#check the subdomain
+def check_subdomains(line, url)
+  uri = URI.parse("https://#{line}.#{url}")
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true if uri.scheme == 'https'
+  req = Net::HTTP::Get.new(uri.request_uri)
+  http.read_timeout = 5
+
+  begin
+    res = http.request(req)
+    if ['200', '301', '302', '403'].include?(res.code)
+      puts "[+] Found: #{uri}".colorize(:green).bold
+    end
+  rescue SocketError => e
+    # DNS error
+  rescue => e
+    # Other error
+  end
+end
+
+wordlist_file = wordlist || default_wordlist                 
+unless File.exist?(wordlist_file)                              
+  puts "[!] Wordlist file not found!"
+  exit
+end
+
+puts "[*] Using #{wordlist_file}"
+puts "[*] Threads: #{threads_count}"
+
+lines = File.readlines(wordlist_file).map(&:chomp)
+queue = Queue.new
+lines.each do |line|
+ queue << line 
+end
+
+threads = []
+threads_count.times do
+  threads << Thread.new do
+    until queue.empty?
+      begin
+        line = queue.pop(true)
+        check_subdomains(line, url)
+      rescue ThreadError
+        break
+      end
+    end
+  end
+end
+
+threads.each(&:join)
+
+end_time = Time.now   # ⏱️ End time
+duration = end_time - start_time
+puts "[*] Done in #{duration.round(2)} seconds."
+
+
+
+
+
+
+
+
+
+
+
+
