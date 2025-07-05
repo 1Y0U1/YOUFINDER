@@ -15,6 +15,8 @@ sudo gem install net-http
 echo ""
 sudo cp youfinder /usr/bin
 sudo chmod +x /usr/bin/youfinder
+sudo cp Default.txt /usr/bin
+sudo chmod +x /usr/bin/Default.txt
 echo "\n***done***\n"
 clear
 echo ""
