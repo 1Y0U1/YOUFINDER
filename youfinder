@@ -1,9 +1,8 @@
+#!/bin/ruby
+
 require 'optparse'
 require 'net/http'
 require 'colorize'
-
-
-
 
 options = {}
 version = 1.0
