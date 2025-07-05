@@ -44,7 +44,7 @@ OptionParser.new do |opts|
   end
 
   opts.separator ""
-  opts.on_tail("Example: ruby #{$0} -d example.com -w wordlist.txt -t 500")
+  opts.on_tail("Example: ruby youfinder -d example.com -w wordlist.txt -t 500")
 end.parse!
 
 #check if the option is empty or not
