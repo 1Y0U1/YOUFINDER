@@ -7,7 +7,7 @@ require 'colorize'
 options = {}
 version = 1.0
 wordlist = nil
-default_wordlist = "default.txt"
+default_wordlist = "Default.txt"
 url = nil
 threads_count = 200
 
