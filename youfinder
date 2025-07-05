@@ -14,7 +14,7 @@ threads_count = 200
 start_time = Time.now   # ⏱️ Start time added
 
 OptionParser.new do |opts|
-  opts.banner = "Usage: #{__FILE__} [options]"
+  opts.banner = "Usage: #{$0} [options]"
 
   opts.on('-w', '--wordlist WORDLIST', 'Specify wordlist (Default: default.txt)') do |word|
     wordlist = word
