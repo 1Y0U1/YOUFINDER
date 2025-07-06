@@ -13,6 +13,7 @@ threads_count = 200
 
 start_time = Time.now   # ⏱️ Start time added
 
+begin
 OptionParser.new do |opts|
   opts.banner = "Usage: ruby youfinder [options]"
 
@@ -46,6 +47,11 @@ OptionParser.new do |opts|
   opts.separator ""
   opts.on_tail("Example: ruby youfinder -d example.com -w wordlist.txt -t 500")
 end.parse!
+
+rescue OptionParser::MissingArgument
+  puts "Erro: Domain must be specified"
+  exit
+end
 
 #check if the option is empty or not
 if options.empty?
