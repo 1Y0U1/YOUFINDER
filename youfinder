@@ -39,6 +39,11 @@ OptionParser.new do |opts|
 
   opts.on('-h', '--help','Show help') do 
  puts `figlet YOUFINDER`.colorize(:blue).bold
+puts "-"*65
+puts "        YOUFINDER - SUBDOMAIN FINDER".colorize(:light_blue).bold
+puts "                Developed by Rubal Sharma (YOU)".colorize(:red).bold
+puts "-" * 65
+
 
     puts opts
     exit
