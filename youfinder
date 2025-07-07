@@ -81,7 +81,12 @@ def check_subdomains(line, url)
   begin
     res = http.request(req)
     if ['200', '301', '302', '403'].include?(res.code)
-      puts "[+] Found: #{uri}".colorize(:green).bold
+      puts "[+] Found: #{uri} ".colorize(:green).bold
+  if res.code.to_i == 200
+          puts "   [Status Code -> #{res.code}]".colorize(:blue).bold
+          else
+          puts "   [Status Code -> #{res.code}]".colorize(:light_yellow).bold
+    end
     end
   rescue SocketError => e
     # DNS error
